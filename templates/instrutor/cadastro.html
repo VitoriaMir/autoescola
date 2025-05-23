@@ -1,0 +1,185 @@
+{% extends 'base.html' %} {% block content %}
+<div class="row justify-content-center mt-5">
+  <div class="col-md-8 col-lg-6">
+    <div class="card shadow-sm">
+      <div class="card-header bg-white text-center">
+        <h4 class="mb-0 text-pink">
+          <i class="bi bi-person-plus"></i> Cadastrar Instrutor
+        </h4>
+      </div>
+      <div class="card-body">
+        <!-- Alertas de Erro -->
+        {% if request.query_params.get('error') == 'cpf' %}
+        <div class="alert alert-danger text-center" role="alert">
+          Este CPF já está cadastrado.
+        </div>
+        {% elif request.query_params.get('error') == 'cpf_invalido' %}
+        <div class="alert alert-danger text-center" role="alert">
+          CPF inválido. Verifique e tente novamente.
+        </div>
+        {% endif %}
+        <form action="/instrutores/cadastrar" method="post" class="row g-3">
+          <div class="col-12">
+            <label for="id" class="form-label"
+              >ID (Gerado automaticamente)</label
+            >
+            <input
+              type="text"
+              id="id"
+              class="form-control"
+              value="Automático"
+              disabled
+            />
+          </div>
+
+          <div class="col-12">
+            <label for="nome" class="form-label">Nome</label>
+            <input
+              type="text"
+              id="nome"
+              class="form-control"
+              name="nome"
+              placeholder="Digite o nome completo"
+              required
+            />
+          </div>
+
+          <div class="col-md-6">
+            <label for="cpf" class="form-label">CPF</label>
+            <input
+              type="text"
+              id="cpf"
+              class="form-control"
+              name="cpf"
+              placeholder="000.000.000-00"
+              required
+            />
+          </div>
+
+          <div class="col-md-6">
+            <label for="telefone" class="form-label">Telefone</label>
+            <input
+              type="text"
+              id="telefone"
+              class="form-control"
+              name="telefone"
+              placeholder="(00) 00000-0000"
+              required
+            />
+          </div>
+
+          <div class="col-md-6">
+            <label for="email" class="form-label">Email</label>
+            <input
+              type="email"
+              id="email"
+              class="form-control"
+              name="email"
+              placeholder="exemplo@email.com"
+            />
+          </div>
+
+          <div class="col-md-6">
+            <label for="senha" class="form-label">Senha de Acesso</label>
+            <div class="input-group">
+              <input
+                type="password"
+                name="senha"
+                id="senha"
+                class="form-control"
+                required
+              />
+              <button
+                type="button"
+                class="btn btn-outline-secondary"
+                id="toggleSenha"
+                tabindex="-1"
+              >
+                <i class="bi bi-eye"></i>
+              </button>
+            </div>
+          </div>
+
+          <div class="col-12">
+            <label class="form-label">Categorias</label>
+            <div class="d-flex flex-wrap gap-2">
+              {% for categoria in ['A', 'B', 'C', 'D'] %}
+              <div class="form-check form-check-inline">
+                <input
+                  class="form-check-input"
+                  type="checkbox"
+                  name="categoria"
+                  value="{{ categoria }}"
+                  id="categoria{{ categoria }}"
+                />
+                <label class="form-check-label" for="categoria{{ categoria }}"
+                  >{{ categoria }}</label
+                >
+              </div>
+              {% endfor %}
+            </div>
+          </div>
+
+          <div class="col-12">
+            <label class="form-label">Permissões de Acesso</label>
+            <div class="d-flex flex-wrap gap-2">
+              {% set permissoes_disponiveis = [ ('ver_home', 'Acessar
+              Dashboard'), ('cadastrar_aluno', 'Cadastrar e Editar Aluno'),
+              ('agendar_aula', 'Agendar Aulas'), ('cadastrar_instrutor',
+              'Cadastrar Instrutor'), ('cadastrar_veiculo', 'Cadastrar Veículo')
+              ] %} {% for valor, descricao in permissoes_disponiveis %}
+              <div class="form-check">
+                <input
+                  class="form-check-input"
+                  type="checkbox"
+                  name="permissoes"
+                  value="{{ valor }}"
+                  id="perm_{{ valor }}"
+                />
+                <label class="form-check-label" for="perm_{{ valor }}"
+                  >{{ descricao }}</label
+                >
+              </div>
+              {% endfor %}
+            </div>
+          </div>
+
+          <div class="col-12">
+            <button type="submit" class="btn btn-primary w-100">
+              <i class="bi bi-check-circle"></i> Cadastrar Instrutor
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  // Alternar visibilidade da senha
+  document.getElementById("toggleSenha").addEventListener("click", function () {
+    const senhaInput = document.getElementById("senha");
+    const icon = this.querySelector("i");
+    if (senhaInput.type === "password") {
+      senhaInput.type = "text";
+      icon.classList.remove("bi-eye");
+      icon.classList.add("bi-eye-slash");
+    } else {
+      senhaInput.type = "password";
+      icon.classList.remove("bi-eye-slash");
+      icon.classList.add("bi-eye");
+    }
+  });
+
+  // Máscara de CPF
+  document.getElementById("cpf").addEventListener("input", function (e) {
+    let value = e.target.value.replace(/\D/g, "");
+    if (value.length > 11) value = value.slice(0, 11);
+    value = value.replace(/(\d{3})(\d)/, "$1.$2");
+    value = value.replace(/(\d{3})(\d)/, "$1.$2");
+    value = value.replace(/(\d{3})(\d{1,2})$/, "$1-$2");
+    e.target.value = value;
+  });
+</script>
+
+{% endblock %}

@@ -1,0 +1,123 @@
+{% extends 'base.html' %} {% block content %}
+<div class="row justify-content-center mt-5">
+  <div class="col-md-8 col-lg-6">
+    <div class="card shadow-sm">
+      <div class="card-header bg-white text-center">
+        <h4 class="mb-0 text-pink fw-bold">
+          <i class="bi bi-pencil-square"></i> Editar Veículo
+        </h4>
+      </div>
+      <div class="card-body">
+        {% if request.query_params.get('success') == 'atualizado' %}
+        <div
+          class="alert alert-success alert-dismissible fade show text-center"
+          role="alert"
+        >
+          Veículo atualizado com sucesso!
+          <button
+            type="button"
+            class="btn-close"
+            data-bs-dismiss="alert"
+            aria-label="Fechar"
+          ></button>
+        </div>
+        {% endif %}
+
+        <form
+          action="/veiculos/editar/{{ veiculo.id }}"
+          method="post"
+          class="row g-3"
+        >
+          ...
+        </form>
+      </div>
+
+      <div class="card-body">
+        <form
+          action="/veiculos/editar/{{ veiculo.id }}"
+          method="post"
+          class="row g-3"
+        >
+          <div class="col-12">
+            <label for="marca" class="form-label">Marca</label>
+            <input
+              type="text"
+              id="marca"
+              name="marca"
+              class="form-control"
+              required
+              value="{{ veiculo.marca }}"
+            />
+          </div>
+
+          <div class="col-12">
+            <label for="modelo" class="form-label">Modelo</label>
+            <input
+              type="text"
+              id="modelo"
+              name="modelo"
+              class="form-control"
+              required
+              value="{{ veiculo.modelo }}"
+            />
+          </div>
+
+          <div class="col-12">
+            <label for="cor" class="form-label">Cor</label>
+            <input
+              type="text"
+              id="cor"
+              name="cor"
+              class="form-control"
+              required
+              value="{{ veiculo.cor }}"
+            />
+          </div>
+
+          <div class="col-md-6">
+            <label for="ano" class="form-label">Ano</label>
+            <input
+              type="number"
+              id="ano"
+              name="ano"
+              class="form-control"
+              required
+              value="{{ veiculo.ano }}"
+            />
+          </div>
+
+          <div class="col-md-6">
+            <label for="placa" class="form-label">Placa</label>
+            <input
+              type="text"
+              id="placa"
+              name="placa"
+              class="form-control"
+              required
+              value="{{ veiculo.placa }}"
+            />
+          </div>
+
+          <div class="col-12">
+            <button type="submit" class="btn btn-primary w-100">
+              <i class="bi bi-check-circle"></i> Salvar Alterações
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Máscara para Placa -->
+<script>
+  document.getElementById("placa").addEventListener("input", function (e) {
+    let value = e.target.value.toUpperCase().replace(/[^A-Z0-9]/g, "");
+    if (value.length > 7) value = value.slice(0, 7);
+    if (value.length > 3) {
+      value = value.slice(0, 3) + "-" + value.slice(3);
+    }
+    e.target.value = value;
+  });
+</script>
+{% endblock %}

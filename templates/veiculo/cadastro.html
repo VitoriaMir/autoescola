@@ -1,0 +1,91 @@
+{% extends 'base.html' %} {% block content %}
+<div class="row justify-content-center mt-5">
+  <div class="col-md-8 col-lg-6">
+    <div class="card shadow-sm">
+      <div class="card-header bg-white text-center">
+        <h4 class="mb-0 text-pink">
+          <i class="bi bi-car-front-fill"></i> Cadastrar Veículo
+        </h4>
+      </div>
+      <div class="card-body">
+        {% if request.query_params.get('error') == 'placa' %}
+        <div class="alert alert-danger text-center" role="alert">
+          Esta placa já está cadastrada.
+        </div>
+        {% elif request.query_params.get('error') == 'placa_invalida' %}
+        <div class="alert alert-danger text-center" role="alert">
+          Formato de placa inválido. Utilize apenas letras e números no formato
+          AAA-1234.
+        </div>
+        {% endif %}
+        <form action="/veiculos/cadastrar" method="post" class="row g-3">
+          <div class="col-12">
+            <label for="marca" class="form-label">Marca</label>
+            <input
+              type="text"
+              name="marca"
+              id="marca"
+              class="form-control"
+              required
+            />
+          </div>
+          <div class="col-12">
+            <label for="modelo" class="form-label">Modelo</label>
+            <input
+              type="text"
+              name="modelo"
+              id="modelo"
+              class="form-control"
+              required
+            />
+          </div>
+          <div class="col-12">
+            <label for="cor" class="form-label">Cor</label>
+            <input
+              type="text"
+              name="cor"
+              id="cor"
+              class="form-control"
+              required
+            />
+          </div>
+          <div class="col-md-6">
+            <label for="ano" class="form-label">Ano</label>
+            <input
+              type="number"
+              name="ano"
+              id="ano"
+              class="form-control"
+              required
+            />
+          </div>
+          <div class="col-md-6">
+            <label for="placa" class="form-label">Placa</label>
+            <input
+              type="text"
+              name="placa"
+              id="placa"
+              class="form-control"
+              required
+              placeholder="AAA-1234"
+            />
+          </div>
+          <div class="col-12">
+            <button type="submit" class="btn btn-primary w-100">
+              <i class="bi bi-check-circle"></i> Cadastrar Veículo
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+<script>
+  document.getElementById("placa").addEventListener("input", function (e) {
+    let value = e.target.value.toUpperCase().replace(/[^A-Z0-9]/g, "");
+    if (value.length > 7) value = value.slice(0, 7);
+    if (value.length > 3) value = value.slice(0, 3) + "-" + value.slice(3);
+    e.target.value = value;
+  });
+</script>
+{% endblock %}

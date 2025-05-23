@@ -1,0 +1,66 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="container mt-5">
+  <div class="d-flex justify-content-between align-items-center mb-4 flex-wrap">
+    <h2 class="fw-bold text-pink mb-2 mb-md-0">Gerenciamento de Instrutores</h2>
+    <div class="d-flex gap-2 flex-wrap align-items-center">
+      <form method="get" action="/instrutores" class="d-flex gap-2">
+        <select id="filtro" name="filtro" class="form-select" style="min-width: 200px;" onchange="this.form.submit()">
+          <option value="">Ordenar por...</option>
+          <option value="id_asc" {% if filtro=='id_asc' %}selected{% endif %}>ID Crescente</option>
+          <option value="id_desc" {% if filtro=='id_desc' %}selected{% endif %}>ID Decrescente</option>
+          <option value="nome_asc" {% if filtro=='nome_asc' %}selected{% endif %}>Nome (A-Z)</option>
+          <option value="nome_desc" {% if filtro=='nome_desc' %}selected{% endif %}>Nome (Z-A)</option>
+        </select>
+        <a href="/instrutores" class="btn btn-outline-danger">Limpar</a>
+      </form>
+      <a href="/instrutores/cadastrar" class="btn btn-outline-primary d-flex align-items-center gap-1">
+        <i class="bi bi-plus-circle"></i> Novo Instrutor
+      </a>
+    </div>
+  </div>
+
+  {% if instrutores %}
+  <p class="text-muted">Total de instrutores exibidos: <strong>{{ instrutores|length }}</strong></p>
+  {% else %}
+  <p class="text-muted">Nenhum instrutor encontrado com os critérios atuais.</p>
+  {% endif %}
+
+  <div class="table-responsive shadow-sm rounded border" style="max-height: 500px; overflow-y: auto;">
+    <table class="table table-hover align-middle mb-0 table-fixed-header">
+      <thead class="table-light position-sticky top-0" style="z-index: 1;">
+        <tr>
+          <th>Nome</th>
+          <th>CPF</th>
+          <th>Telefone</th>
+          <th>Email</th>
+          <th>Ações</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% if instrutores %}
+        {% for instrutor in instrutores %}
+        <tr>
+          <td>{{ instrutor.nome }}</td>
+          <td>{{ instrutor.cpf }}</td>
+          <td>({{ instrutor.telefone[0:2] }}) {{ instrutor.telefone[2:7] }}-{{ instrutor.telefone[7:11] }}</td>
+          <td>{{ instrutor.email }}</td>
+          <td>
+            <a href="/instrutores/editar/{{ instrutor.id }}" class="btn btn-sm btn-outline-warning">
+              <i class="bi bi-pencil-square"></i> Editar
+            </a>
+          </td>
+        </tr>
+        {% endfor %}
+        {% else %}
+        <tr>
+          <td colspan="5" class="text-center text-muted py-4">
+            Nenhum instrutor cadastrado até o momento.
+          </td>
+        </tr>
+        {% endif %}
+      </tbody>
+    </table>
+  </div>
+</div>
+{% endblock %}

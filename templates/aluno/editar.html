@@ -1,0 +1,91 @@
+{% extends 'base.html' %} {% block content %}
+<div class="row justify-content-center mt-5">
+  <div class="col-md-8 col-lg-6">
+    <div class="card shadow-sm">
+      <div class="card-header bg-white text-center">
+        <h4 class="mb-0 text-pink">
+          <i class="bi bi-pencil-square"></i> Editar Aluno
+        </h4>
+      </div>
+      <div class="card-body">
+        <form
+          action="/alunos/editar/{{ aluno.id }}"
+          method="post"
+          class="row g-3"
+        >
+          <div class="col-12">
+            <label class="form-label">ID</label>
+            <input
+              type="text"
+              class="form-control"
+              value="{{ aluno.id }}"
+              readonly
+            />
+          </div>
+
+          <div class="col-12">
+            <label for="nome" class="form-label">Nome</label>
+            <input
+              type="text"
+              name="nome"
+              class="form-control"
+              value="{{ aluno.nome }}"
+              required
+            />
+          </div>
+
+          <div class="col-md-6">
+            <label class="form-label">CPF (não editável)</label>
+            <input
+              type="text"
+              class="form-control"
+              value="{{ aluno.cpf }}"
+              readonly
+            />
+          </div>
+
+          <div class="col-md-6">
+            <label for="data_nascimento" class="form-label"
+              >Data de Nascimento</label
+            >
+            <input
+              type="date"
+              name="data_nascimento"
+              class="form-control"
+              value="{{ aluno.data_nascimento }}"
+              required
+            />
+          </div>
+
+          <div class="col-md-6">
+            <label for="telefone" class="form-label">Telefone</label>
+            <input
+              type="text"
+              name="telefone"
+              class="form-control"
+              value="{{ aluno.telefone }}"
+              required
+            />
+          </div>
+
+          <div class="col-md-6">
+            <label for="email" class="form-label">Email</label>
+            <input
+              type="email"
+              name="email"
+              class="form-control"
+              value="{{ aluno.email }}"
+            />
+          </div>
+
+          <div class="col-12">
+            <button type="submit" class="btn btn-primary w-100">
+              <i class="bi bi-check-circle"></i> Salvar Alterações
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

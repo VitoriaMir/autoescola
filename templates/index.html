@@ -1,0 +1,72 @@
+{% extends 'base.html' %}
+{% block content %}
+<style>
+.cards {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 15px;
+  margin-top: 40px;
+}
+
+.cards .red { background-color: #f43f5e; }
+.cards .blue { background-color: #3b82f6; }
+.cards .green { background-color: #22c55e; }
+.cards .orange { background-color: #f59e0b; }
+
+.cards .card {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  text-align: center;
+  height: 140px;
+  width: 250px;
+  border-radius: 10px;
+  color: white;
+  cursor: pointer;
+  transition: 400ms;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+  text-decoration: none;
+}
+
+.cards .card p.tip {
+  font-size: 1.1em;
+  font-weight: 700;
+}
+.cards .card p.second-text {
+  font-size: .8em;
+}
+
+.cards .card:hover {
+  transform: scale(1.1, 1.1);
+}
+.cards:hover > .card:not(:hover) {
+  filter: blur(10px);
+  transform: scale(0.9, 0.9);
+}
+</style>
+
+<div class="text-center mt-5">
+  <h2 class="text-uppercase fw-bold text-pink">Serviços</h2>
+</div>
+
+<div class="cards">
+  <a href="/alunos" class="card red">
+    <p class="tip">Aluno</p>
+    <p class="second-text">Cadastro e listagem de alunos</p>
+  </a>
+  <a href="/instrutores" class="card blue">
+    <p class="tip">Instrutor</p>
+    <p class="second-text">Gerenciamento de instrutores</p>
+  </a>
+  <a href="/veiculos" class="card green">
+    <p class="tip">Veículos</p>
+    <p class="second-text">Controle da frota de veículos</p>
+  </a>
+  <a href="/aulas" class="card orange">
+    <p class="tip">Aulas</p>
+    <p class="second-text">Agendamento e controle de aulas</p>
+  </a>
+</div>
+{% endblock %}

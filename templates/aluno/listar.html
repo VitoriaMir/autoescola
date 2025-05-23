@@ -1,0 +1,85 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="container mt-5">
+
+  {% if request.query_params.get('success') == 'cadastrado' %}
+  <div class="alert alert-success alert-dismissible fade show text-center" role="alert">
+    Aluno cadastrado com sucesso!
+    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Fechar"></button>
+  </div>
+  {% elif request.query_params.get('success') == 'editado' %}
+  <div class="alert alert-success alert-dismissible fade show text-center" role="alert">
+    Aluno atualizado com sucesso!
+    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Fechar"></button>
+  </div>
+  {% endif %}
+
+  <div class="d-flex justify-content-between align-items-center mb-4 flex-wrap">
+    <h2 class="fw-bold text-pink mb-2 mb-md-0">Gerenciamento de Alunos</h2>
+    <div class="d-flex gap-2 flex-wrap align-items-center">
+      <form method="get" action="/alunos" class="d-flex gap-2">
+        <select id="filtro" name="filtro" class="form-select" style="min-width: 200px;" onchange="this.form.submit()">
+          <option value="">Ordenar por...</option>
+          <option value="id_asc" {% if filtro=='id_asc' %}selected{% endif %}>ID Crescente</option>
+          <option value="id_desc" {% if filtro=='id_desc' %}selected{% endif %}>ID Decrescente</option>
+          <option value="nome_asc" {% if filtro=='nome_asc' %}selected{% endif %}>Nome (A-Z)</option>
+          <option value="nome_desc" {% if filtro=='nome_desc' %}selected{% endif %}>Nome (Z-A)</option>
+          <option value="data_nasc_asc" {% if filtro=='data_nasc_asc' %}selected{% endif %}>Nascimento Mais Antigo
+          </option>
+          <option value="data_nasc_desc" {% if filtro=='data_nasc_desc' %}selected{% endif %}>Nascimento Mais Recente
+          </option>
+        </select>
+        <a href="/alunos" class="btn btn-outline-danger">Limpar</a>
+      </form>
+      <a href="/alunos/cadastrar" class="btn btn-outline-primary d-flex align-items-center gap-1">
+        <i class="bi bi-plus-circle"></i> Novo Aluno
+      </a>
+    </div>
+  </div>
+
+  {% if alunos %}
+  <p class="text-muted">Total de alunos exibidos: <strong>{{ alunos|length }}</strong></p>
+  {% else %}
+  <p class="text-muted">Nenhum aluno encontrado.</p>
+  {% endif %}
+
+  <div class="table-responsive shadow-sm rounded border" style="max-height: 500px; overflow-y: auto;">
+    <table class="table table-hover align-middle mb-0 table-fixed-header">
+      <thead class="table-light position-sticky top-0" style="z-index: 1;">
+        <tr>
+          <th>Nome</th>
+          <th>CPF</th>
+          <th>Data de Nascimento</th>
+          <th>Telefone</th>
+          <th>Email</th>
+          <th>Ações</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% if alunos %}
+        {% for aluno in alunos %}
+        <tr>
+          <td>{{ aluno.nome }}</td>
+          <td>{{ aluno.cpf }}</td>
+          <td>{{ aluno.data_nascimento.strftime('%d/%m/%Y') }}</td>
+          <td>({{ aluno.telefone[0:2] }}) {{ aluno.telefone[2:7] }}-{{ aluno.telefone[7:11] }}</td>
+          <td>{{ aluno.email }}</td>
+          <td>
+            <a href="/alunos/editar/{{ aluno.id }}" class="btn btn-sm btn-outline-warning">
+              <i class="bi bi-pencil-square"></i> Editar
+            </a>
+          </td>
+        </tr>
+        {% endfor %}
+        {% else %}
+        <tr>
+          <td colspan="6" class="text-center text-muted py-4">
+            Nenhum aluno cadastrado até o momento.
+          </td>
+        </tr>
+        {% endif %}
+      </tbody>
+    </table>
+  </div>
+</div>
+{% endblock %}

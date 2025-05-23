@@ -1,0 +1,147 @@
+{% extends 'base.html' %} {% block content %}
+<div class="row justify-content-center mt-5">
+  <div class="col-md-8 col-lg-6">
+    <div class="card shadow-sm">
+      <div class="card-header bg-white">
+        <h4 class="mb-0 text-center text-pink">
+          <i class="bi bi-pencil-square"></i> Editar Instrutor
+        </h4>
+      </div>
+      <div class="card-body">
+        {% set permissoes_disponiveis = [ ('ver_home', 'Acessar Dashboard'),
+        ('cadastrar_aluno', 'Cadastrar e Editar Aluno'), ('agendar_aula',
+        'Agendar Aulas'), ('cadastrar_instrutor', 'Cadastrar Instrutor'),
+        ('cadastrar_veiculo', 'Cadastrar Veículo') ] %} {% set permissoes_atual
+        = instrutor.permissoes.split(',') if instrutor.permissoes else [] %}
+
+        <form
+          action="/instrutores/editar/{{ instrutor.id }}"
+          method="post"
+          class="row g-3"
+        >
+          <div class="col-12">
+            <label class="form-label">ID</label>
+            <input
+              type="text"
+              class="form-control"
+              value="{{ instrutor.id }}"
+              readonly
+            />
+          </div>
+          <div class="col-12">
+            <label for="nome" class="form-label">Nome</label>
+            <input
+              type="text"
+              class="form-control"
+              name="nome"
+              value="{{ instrutor.nome }}"
+              required
+            />
+          </div>
+          <div class="col-md-6">
+            <label class="form-label">CPF (não editável)</label>
+            <input
+              type="text"
+              class="form-control"
+              value="{{ instrutor.cpf }}"
+              readonly
+            />
+          </div>
+          <div class="col-md-6">
+            <label for="telefone" class="form-label">Telefone</label>
+            <input
+              type="text"
+              class="form-control"
+              name="telefone"
+              value="{{ instrutor.telefone }}"
+              required
+            />
+          </div>
+          <div class="col-md-6">
+            <label for="email" class="form-label">Email</label>
+            <input
+              type="email"
+              class="form-control"
+              name="email"
+              value="{{ instrutor.email }}"
+            />
+          </div>
+          <div class="col-md-6">
+            <label for="nova_senha" class="form-label"
+              >Nova Senha (opcional)</label
+            >
+            <div class="input-group">
+              <input
+                type="password"
+                name="nova_senha"
+                id="nova_senha"
+                class="form-control"
+              />
+              <button
+                type="button"
+                class="btn btn-outline-secondary"
+                id="toggleNovaSenha"
+                tabindex="-1"
+              >
+                <i class="bi bi-eye"></i>
+              </button>
+            </div>
+          </div>
+
+          <div class="col-12">
+            <label class="form-label">Permissões de Acesso</label>
+            <div class="d-flex flex-wrap gap-2">
+              {% for valor, descricao in permissoes_disponiveis %}
+              <div class="form-check">
+                <input
+                  class="form-check-input"
+                  type="checkbox"
+                  name="permissoes"
+                  value="{{ valor }}"
+                  id="perm_{{ valor }}"
+                  {%
+                  if
+                  valor
+                  in
+                  permissoes_atual
+                  %}checked{%
+                  endif
+                  %}
+                />
+                <label class="form-check-label" for="perm_{{ valor }}"
+                  >{{ descricao }}</label
+                >
+              </div>
+              {% endfor %}
+            </div>
+          </div>
+
+          <div class="col-12">
+            <button type="submit" class="btn btn-primary w-100">
+              <i class="bi bi-check-circle"></i> Salvar Alterações
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  document
+    .getElementById("toggleNovaSenha")
+    .addEventListener("click", function () {
+      const senhaInput = document.getElementById("nova_senha");
+      const icon = this.querySelector("i");
+      if (senhaInput.type === "password") {
+        senhaInput.type = "text";
+        icon.classList.remove("bi-eye");
+        icon.classList.add("bi-eye-slash");
+      } else {
+        senhaInput.type = "password";
+        icon.classList.remove("bi-eye-slash");
+        icon.classList.add("bi-eye");
+      }
+    });
+</script>
+{% endblock %}

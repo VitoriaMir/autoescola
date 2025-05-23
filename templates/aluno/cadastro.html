@@ -1,0 +1,99 @@
+{% extends 'base.html' %} {% block content %}
+<div class="row justify-content-center mt-5">
+  <div class="col-md-8 col-lg-6">
+    <div class="card shadow-sm">
+      <div class="card-header bg-white">
+        <h4 class="mb-0 text-center text-pink">
+          <i class="bi bi-person-plus"></i> Cadastrar Aluno
+        </h4>
+      </div>
+      <div class="card-body">
+        <!-- Alertas de Erro -->
+        {% if request.query_params.get('error') == 'cpf' %}
+        <div class="alert alert-danger text-center" role="alert">
+          Este CPF já está cadastrado.
+        </div>
+        {% elif request.query_params.get('error') == 'cpf_invalido' %}
+        <div class="alert alert-danger text-center" role="alert">
+          CPF inválido. Verifique e tente novamente.
+        </div>
+        {% endif %}
+
+        <form action="/alunos/cadastrar" method="post" class="row g-3">
+          <div class="col-12">
+            <label class="form-label">ID (Gerado automaticamente)</label>
+            <input
+              type="text"
+              class="form-control"
+              value="Automático"
+              disabled
+            />
+          </div>
+          <div class="col-12">
+            <label for="nome" class="form-label">Nome</label>
+            <input type="text" class="form-control" name="nome" required />
+          </div>
+          <div class="col-md-6">
+            <label for="cpf" class="form-label">CPF</label>
+            <input
+              type="text"
+              class="form-control"
+              name="cpf"
+              id="cpf"
+              required
+            />
+          </div>
+          <div class="col-md-6">
+            <label for="data_nascimento" class="form-label"
+              >Data de Nascimento</label
+            >
+            <input
+              type="date"
+              class="form-control"
+              name="data_nascimento"
+              required
+            />
+          </div>
+          <div class="col-md-6">
+            <label for="telefone" class="form-label">Telefone</label>
+            <input type="text" class="form-control" name="telefone" required />
+          </div>
+          <div class="col-md-6">
+            <label for="email" class="form-label">Email</label>
+            <input type="email" class="form-control" name="email" />
+          </div>
+          <div class="col-12">
+            <button type="submit" class="btn btn-primary w-100">
+              <i class="bi bi-check-circle"></i> Cadastrar Aluno
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Script de Máscara de CPF -->
+<script>
+  document.getElementById("cpf").addEventListener("input", function (e) {
+    let value = e.target.value.replace(/\D/g, "");
+    if (value.length > 11) value = value.slice(0, 11);
+    value = value.replace(/(\d{3})(\d)/, "$1.$2");
+    value = value.replace(/(\d{3})(\d)/, "$1.$2");
+    value = value.replace(/(\d{3})(\d{1,2})$/, "$1-$2");
+    e.target.value = value;
+  });
+
+  document.getElementById("telefone").addEventListener("input", function (e) {
+    let value = e.target.value.replace(/\D/g, "");
+    if (value.length > 11) value = value.slice(0, 11);
+
+    if (value.length > 0) value = "(" + value;
+    if (value.length > 3) value = value.slice(0, 3) + ") " + value.slice(3);
+    if (value.length > 10) value = value.slice(0, 10) + "-" + value.slice(10);
+
+    e.target.value = value;
+  });
+</script>
+
+{% endblock %}

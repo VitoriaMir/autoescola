@@ -1,0 +1,172 @@
+{% extends 'base.html' %} {% block content %}
+<div class="row justify-content-center mt-5">
+  <div class="col-md-8 col-lg-6">
+    <div class="card shadow-sm">
+      <div class="card-header bg-white text-center">
+        <h4 class="mb-0 text-pink fw-bold">
+          <i class="bi bi-calendar-event"></i> Cadastrar Aula
+        </h4>
+      </div>
+      <div class="card-body">
+        <form action="/aulas/cadastrar" method="post" class="row g-3">
+          <!-- Busca Aluno -->
+          <div class="col-12">
+            <label for="aluno_busca" class="form-label">Buscar Aluno</label>
+            <input
+              type="text"
+              id="aluno_busca"
+              class="form-control"
+              placeholder="Digite o ID ou Nome"
+            />
+            <input type="hidden" name="aluno_id" id="aluno_id" />
+            <div id="aluno_sugestoes" class="list-group mt-1"></div>
+          </div>
+
+          <!-- Busca Instrutor -->
+          <div class="col-12">
+            <label for="instrutor_busca" class="form-label"
+              >Buscar Instrutor</label
+            >
+            <input
+              type="text"
+              id="instrutor_busca"
+              class="form-control"
+              placeholder="Digite o ID ou Nome"
+            />
+            <input type="hidden" name="instrutor_id" id="instrutor_id" />
+            <div id="instrutor_sugestoes" class="list-group mt-1"></div>
+          </div>
+
+          <!-- Busca Veículo -->
+          <div class="col-12">
+            <label for="veiculo_busca" class="form-label">Buscar Veículo</label>
+            <input
+              type="text"
+              id="veiculo_busca"
+              class="form-control"
+              placeholder="Digite o ID ou Placa"
+            />
+            <input type="hidden" name="veiculo_id" id="veiculo_id" />
+            <div id="veiculo_sugestoes" class="list-group mt-1"></div>
+          </div>
+
+          <div class="col-6">
+            <label for="data" class="form-label">Data</label>
+            <input
+              type="date"
+              name="data"
+              id="data"
+              class="form-control"
+              required
+            />
+          </div>
+
+          <div class="col-6">
+            <label for="hora" class="form-label">Hora</label>
+            <input
+              type="time"
+              name="hora"
+              id="hora"
+              class="form-control"
+              required
+            />
+          </div>
+
+          <div class="col-12">
+            <label for="observacoes" class="form-label">Observações</label>
+            <textarea
+              name="observacoes"
+              id="observacoes"
+              class="form-control"
+            ></textarea>
+          </div>
+
+          <div class="col-12">
+            <button type="submit" class="btn btn-primary w-100">
+              <i class="bi bi-check-circle"></i> Cadastrar Aula
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  function configurarBusca(inputId, hiddenId, sugestoesId, url) {
+    const input = document.getElementById(inputId);
+    const hiddenInput = document.getElementById(hiddenId);
+    const sugestoes = document.getElementById(sugestoesId);
+
+    input.addEventListener("input", async function () {
+      const query = this.value;
+      if (!query) {
+        sugestoes.innerHTML = "";
+        return;
+      }
+      const response = await fetch(`${url}?q=${encodeURIComponent(query)}`);
+      const resultados = await response.json();
+      sugestoes.innerHTML = "";
+      resultados.forEach((item) => {
+        const button = document.createElement("button");
+        button.type = "button";
+        let label =
+          item.nome ||
+          `${item.marca || ""} ${item.modelo || ""} - ${
+            item.placa || ""
+          }`.trim();
+        button.textContent = `${item.id} - ${label}`;
+
+        button.classList.add("list-group-item", "list-group-item-action");
+        button.addEventListener("click", function () {
+          input.value =
+            item.nome || item.marca + " " + item.modelo + " - " + item.placa;
+          hiddenInput.value = item.id;
+          sugestoes.innerHTML = "";
+        });
+        sugestoes.appendChild(button);
+      });
+    });
+
+    input.addEventListener("blur", function () {
+      setTimeout(() => {
+        if (!hiddenInput.value) {
+          input.value = "";
+        }
+      }, 200);
+    });
+  }
+
+  configurarBusca(
+    "aluno_busca",
+    "aluno_id",
+    "aluno_sugestoes",
+    "/api/buscar-aluno"
+  );
+  configurarBusca(
+    "instrutor_busca",
+    "instrutor_id",
+    "instrutor_sugestoes",
+    "/api/buscar-instrutor"
+  );
+  configurarBusca(
+    "veiculo_busca",
+    "veiculo_id",
+    "veiculo_sugestoes",
+    "/api/buscar-veiculo"
+  );
+
+  document.querySelector("form").addEventListener("submit", function (e) {
+    if (
+      !document.getElementById("aluno_id").value ||
+      !document.getElementById("instrutor_id").value ||
+      !document.getElementById("veiculo_id").value
+    ) {
+      e.preventDefault();
+      alert(
+        "Selecione um aluno, um instrutor e um veículo das sugestões antes de prosseguir."
+      );
+    }
+  });
+</script>
+{% endblock %}

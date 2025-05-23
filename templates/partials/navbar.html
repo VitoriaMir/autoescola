@@ -1,0 +1,41 @@
+<nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm">
+  <div class="container">
+    <a class="navbar-brand text-pink fw-bold d-flex align-items-center gap-2" href="/dashboard">
+      <i class="bi bi-car-front-fill"></i> Auto Ressaca
+    </a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
+      <ul class="navbar-nav gap-4">
+        <li class="nav-item">
+          <a class="nav-link {% if active_page == 'home' %}active text-pink border-bottom border-2 border-pink{% endif %}" href="/dashboard">Home</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link {% if active_page == 'alunos' %}active text-pink border-bottom border-2 border-pink{% endif %}" href="/alunos">Alunos</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link {% if active_page == 'instrutores' %}active text-pink border-bottom border-2 border-pink{% endif %}" href="/instrutores">Instrutores</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link {% if active_page == 'veiculos' %}active text-pink border-bottom border-2 border-pink{% endif %}" href="/veiculos">Veículos</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link {% if active_page == 'aulas' %}active text-pink border-bottom border-2 border-pink{% endif %}" href="/aulas">Aulas</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link text-danger" href="/logout">Sair</a>
+        </li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<style>
+  .text-pink {
+    color: #e83e8c !important;
+  }
+  .border-pink {
+    border-color: #e83e8c !important;
+  }
+</style>

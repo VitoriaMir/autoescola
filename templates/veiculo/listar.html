@@ -1,0 +1,73 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="container mt-5">
+
+  <div class="d-flex justify-content-between align-items-center mb-4 flex-wrap">
+    <h2 class="fw-bold text-pink mb-2 mb-md-0">Gerenciamento de Veículos</h2>
+    <div class="d-flex gap-2 flex-wrap align-items-center">
+      <form method="get" action="/veiculos" class="d-flex gap-2">
+        <select id="filtro" name="filtro" class="form-select" style="min-width: 200px;" onchange="this.form.submit()">
+          <option value="">Ordenar por...</option>
+          <option value="id_asc" {% if filtro == 'id_asc' %}selected{% endif %}>ID Crescente</option>
+          <option value="id_desc" {% if filtro == 'id_desc' %}selected{% endif %}>ID Decrescente</option>
+          <option value="marca_asc" {% if filtro == 'marca_asc' %}selected{% endif %}>Marca (A-Z)</option>
+          <option value="marca_desc" {% if filtro == 'marca_desc' %}selected{% endif %}>Marca (Z-A)</option>
+          <option value="modelo_asc" {% if filtro == 'modelo_asc' %}selected{% endif %}>Modelo (A-Z)</option>
+          <option value="modelo_desc" {% if filtro == 'modelo_desc' %}selected{% endif %}>Modelo (Z-A)</option>
+          <option value="placa_asc" {% if filtro == 'placa_asc' %}selected{% endif %}>Placa (A-Z)</option>
+          <option value="placa_desc" {% if filtro == 'placa_desc' %}selected{% endif %}>Placa (Z-A)</option>
+        </select>
+        <a href="/veiculos" class="btn btn-outline-danger">Limpar</a>
+      </form>
+      <a href="/veiculos/cadastrar" class="btn btn-outline-primary d-flex align-items-center gap-1">
+        <i class="bi bi-plus-circle"></i> Novo Veículo
+      </a>
+    </div>
+  </div>
+
+  {% if veiculos %}
+  <p class="text-muted">Total de veículos exibidos: <strong>{{ veiculos|length }}</strong></p>
+  {% else %}
+  <p class="text-muted">Nenhum veículo encontrado com os critérios atuais.</p>
+  {% endif %}
+
+  <div class="table-responsive shadow-sm rounded border" style="max-height: 500px; overflow-y: auto;">
+    <table class="table table-hover align-middle mb-0 table-fixed-header">
+      <thead class="table-light position-sticky top-0" style="z-index: 1;">
+        <tr>
+          <th>Marca</th>
+          <th>Modelo</th>
+          <th>Cor</th>
+          <th>Ano</th>
+          <th>Placa</th>
+          <th>Ações</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% if veiculos %}
+        {% for veiculo in veiculos %}
+        <tr>
+          <td>{{ veiculo.marca }}</td>
+          <td>{{ veiculo.modelo }}</td>
+          <td>{{ veiculo.cor }}</td>
+          <td>{{ veiculo.ano }}</td>
+          <td>{{ veiculo.placa }}</td>
+          <td>
+            <a href="/veiculos/editar/{{ veiculo.id }}" class="btn btn-sm btn-outline-warning">
+              <i class="bi bi-pencil-square"></i> Editar
+            </a>
+          </td>
+        </tr>
+        {% endfor %}
+        {% else %}
+        <tr>
+          <td colspan="6" class="text-center text-muted py-4">
+            Nenhum veículo cadastrado até o momento.
+          </td>
+        </tr>
+        {% endif %}
+      </tbody>
+    </table>
+  </div>
+</div>
+{% endblock %}

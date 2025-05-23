@@ -1,0 +1,87 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="container mt-5">
+
+  {% if request.query_params.get('success') == 'cadastrado' %}
+  <div class="alert alert-success alert-dismissible fade show text-center" role="alert">
+    Aula cadastrada com sucesso!
+    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Fechar"></button>
+  </div>
+  {% elif request.query_params.get('success') == 'editado' %}
+  <div class="alert alert-success alert-dismissible fade show text-center" role="alert">
+    Aula atualizada com sucesso!
+    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Fechar"></button>
+  </div>
+  {% endif %}
+
+  <div class="d-flex justify-content-between align-items-center mb-4 flex-wrap">
+    <h2 class="fw-bold text-pink mb-2 mb-md-0">Gerenciamento de Aulas</h2>
+    <div class="d-flex gap-2 flex-wrap align-items-center">
+      <form method="get" action="/aulas" class="d-flex gap-2">
+        <select id="filtro" name="filtro" class="form-select" style="min-width: 200px;" onchange="this.form.submit()">
+          <option value="">Ordenar por...</option>
+          <option value="id_asc" {% if filtro=='id_asc' %}selected{% endif %}>ID Crescente</option>
+          <option value="id_desc" {% if filtro=='id_desc' %}selected{% endif %}>ID Decrescente</option>
+          <option value="aluno_asc" {% if filtro=='aluno_asc' %}selected{% endif %}>Aluno (A-Z)</option>
+          <option value="aluno_desc" {% if filtro=='aluno_desc' %}selected{% endif %}>Aluno (Z-A)</option>
+          <option value="instrutor_asc" {% if filtro=='instrutor_asc' %}selected{% endif %}>Instrutor (A-Z)</option>
+          <option value="instrutor_desc" {% if filtro=='instrutor_desc' %}selected{% endif %}>Instrutor (Z-A)</option>
+          <option value="data_asc" {% if filtro=='data_asc' %}selected{% endif %}>Data mais antiga</option>
+          <option value="data_desc" {% if filtro=='data_desc' %}selected{% endif %}>Data mais recente</option>
+        </select>
+        <a href="/aulas" class="btn btn-outline-danger">Limpar</a>
+      </form>
+      <a href="/aulas/cadastrar" class="btn btn-outline-primary d-flex align-items-center gap-1">
+        <i class="bi bi-plus-circle"></i> Nova Aula
+      </a>
+    </div>
+  </div>
+
+  {% if aulas %}
+  <p class="text-muted">Total de aulas exibidas: <strong>{{ aulas|length }}</strong></p>
+  {% else %}
+  <p class="text-muted">Nenhuma aula encontrada com os critérios atuais.</p>
+  {% endif %}
+
+  <div class="table-responsive shadow-sm rounded border" style="max-height: 500px; overflow-y: auto;">
+    <table class="table table-hover align-middle mb-0 table-fixed-header">
+      <thead class="table-light position-sticky top-0" style="z-index: 1;">
+        <tr>
+          <th>ID</th>
+          <th>Aluno</th>
+          <th>Instrutor</th>
+          <th>Veículo</th>
+          <th>Data e Hora</th>
+          <th>Observações</th>
+          <th>Ações</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% if aulas %}
+        {% for item in aulas %}
+        <tr>
+          <td>{{ item.aula.id }}</td>
+          <td>{{ item.aluno.nome }}</td>
+          <td>{{ item.instrutor.nome }}</td>
+          <td>{{ item.veiculo.modelo }}</td>
+          <td>{{ item.aula.data_hora.strftime('%d/%m/%Y %H:%M') }}</td>
+          <td>{{ item.aula.observacoes or 'Sem observações' }}</td>
+          <td>
+            <a href="/aulas/editar/{{ item.aula.id }}" class="btn btn-sm btn-outline-warning">
+              <i class="bi bi-pencil-square"></i> Editar
+            </a>
+          </td>
+        </tr>
+        {% endfor %}
+        {% else %}
+        <tr>
+          <td colspan="7" class="text-center text-muted py-4">
+            Nenhuma aula cadastrada até o momento.
+          </td>
+        </tr>
+        {% endif %}
+      </tbody>
+    </table>
+  </div>
+</div>
+{% endblock %}

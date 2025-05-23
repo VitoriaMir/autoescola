@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Dashboard - AutoEscola Ressaca</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
+    <style>
+        body {
+            background: #f8f9fa;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        .dashboard-card {
+            max-width: 1100px;
+            margin: 60px auto 20px;
+            background: #fff;
+            border-radius: 20px;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+            padding: 40px 30px;
+            position: relative;
+        }
+
+        .logout-btn {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+        }
+
+        .cards {
+            display: flex;
+            justify-content: space-between;
+            gap: 15px;
+            margin-top: 50px;
+            flex-wrap: wrap;
+        }
+
+        .card-service {
+            flex: 1 1 22%;
+            min-width: 200px;
+            height: 150px;
+            border-radius: 12px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            color: white;
+            text-decoration: none;
+            font-weight: bold;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s;
+        }
+
+        .card-service:hover {
+            transform: translateY(-5px);
+        }
+
+        .red {
+            background-color: #e74c3c;
+        }
+
+        .blue {
+            background-color: #3498db;
+        }
+
+        .green {
+            background-color: #2ecc71;
+        }
+
+        .orange {
+            background-color: #f39c12;
+        }
+
+        .schedule-section {
+            margin-top: 40px;
+            border-top: 1px solid #ddd;
+            padding-top: 30px;
+        }
+
+        .schedule-item {
+            padding: 10px;
+            border-bottom: 1px solid #eee;
+        }
+
+        .empty-message {
+            color: #888;
+            text-align: center;
+            margin-top: 10px;
+        }
+
+        footer {
+            margin-top: auto;
+            background-color: #f1f1f1;
+            text-align: center;
+            padding: 15px;
+            font-size: 0.9em;
+            color: #555;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="dashboard-card">
+        <a href="/logout" class="btn btn-outline-danger logout-btn">
+            <i class="bi bi-box-arrow-right"></i> Sair
+        </a>
+        <h3 class="text-center">Bem-vindo, {{ username }}!</h3>
+        <p class="text-center">Você está logado no painel administrativo.</p>
+
+        <div class="cards">
+            <a href="/alunos" class="card-service red">
+                <div>Aluno</div>
+                <small>Gerenciar alunos</small>
+            </a>
+            <a href="/instrutores" class="card-service blue">
+                <div>Instrutor</div>
+                <small>Gerenciar instrutores</small>
+            </a>
+            <a href="/veiculos" class="card-service green">
+                <div>Veículos</div>
+                <small>Gerenciar veículos</small>
+            </a>
+            <a href="/aulas" class="card-service orange">
+                <div>Aulas</div>
+                <small>Gerenciar aulas</small>
+            </a>
+        </div>
+
+        <div class="schedule-section">
+            <div class="fw-bold">Aulas de hoje</div>
+            {% if aulas %}
+            {% for aula in aulas %}
+            <div class="schedule-item">
+                <strong>Aluno:</strong> {{ aula.aluno_nome }}<br>
+                <strong>Instrutor:</strong> {{ aula.instrutor_nome }}<br>
+                <strong>Horário:</strong> {{ aula.horario }}
+            </div>
+            {% endfor %}
+            {% else %}
+            <div class="empty-message">Nenhuma aula agendada para hoje.</div>
+            {% endif %}
+        </div>
+    </div>
+
+    <footer>
+        &copy; {{ year }} AutoEscola Ressaca - Todos os direitos reservados
+    </footer>
+</body>
+
+</html>
