@@ -222,31 +222,22 @@
 
     <!-- HERO -->
     <section id="home" class="hero">
-        <!-- Vídeo de fundo com poster e fallback -->
-        <video class="position-absolute top-0 start-0 w-100 h-100 object-fit-cover" autoplay muted loop playsinline
-            poster="static/video-poster.png">
+        <video autoplay muted loop playsinline class="w-100 h-100">
             <source src="static/video.mp4" type="video/mp4">
             <!-- Fallback caso o vídeo não seja suportado -->
-            <img src="static/video-poster.png" alt="Aprenda a Dirigir com Segurança"
-                class="position-absolute top-0 start-0 w-100 h-100 object-fit-cover">
+            <img src="static/video-poster.png" alt="Vídeo de fundo">
         </video>
-
-        <!-- Overlay escuro -->
-        <div class="overlay position-absolute top-0 start-0 w-100 h-100 bg-dark" style="opacity: .5;"></div>
-
-        <!-- Conteúdo centralizado -->
-        <div
-            class="content container position-relative h-100 d-flex flex-column justify-content-center align-items-center text-center text-white">
+        <div class="overlay"></div>
+        <div class="content container animate__animated animate__fadeIn">
             <h1 class="display-4 fw-bold">Aprenda a Dirigir com Segurança</h1>
-            <p class="lead mb-4">
-                A AutoEscola Ressaca oferece aulas práticas e teóricas para você se tornar um motorista seguro.
-            </p>
-            <a href="#contact" class="btn btn-warning btn-lg">
-                <i class="bi bi-whatsapp"></i> Entre em Contato
+            <p class="lead mb-4">A AutoEscola Ressaca oferece aulas práticas e teóricas para você se tornar um motorista
+                seguro.</p>
+            <a href="https://api.whatsapp.com/message/DHVRT22LYZGAF1?autoload=1&app_absent=0" target="_blank"
+                rel="noopener" class="btn btn-warning btn-lg animate__animated animate__pulse animate__infinite">
+                Entre em Contato
             </a>
         </div>
     </section>
-
 
     <!-- SOBRE -->
     <section id="sobre" class="py-5">
