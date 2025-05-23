@@ -12,7 +12,7 @@ from app.middlewares.session_protect import SessionMiddleware
 app = FastAPI()
 
 
-# Health check endpoint
+# Health check endpoint (used by Render to verify the service is healthy)
 @app.get("/healthz", include_in_schema=False)
 async def healthz():
     return JSONResponse({"status": "healthy"})
